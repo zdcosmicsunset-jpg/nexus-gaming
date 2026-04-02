@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { motion, useMotionValue, useMotionTemplate } from "framer-motion";
 import { ArrowUpRight, Search, Command, Zap, ShieldAlert, Cpu, Gamepad2 } from "lucide-react";
+import Link from "next/link"; // 👈 Importamos el componente mágico de navegación
 
 // --- COMPONENTES VISUALES AVANZADOS (Awwwards Style) ---
 
-// 1. Título Cinemático con Glitch sutil y Gradiente Iridiscente
 const CinematicTitle = () => {
   const iridescentGradient = "linear-gradient(90deg, #00CFFF 0%, #BF00FF 50%, #FFF000 100%)";
 
@@ -21,7 +21,6 @@ const CinematicTitle = () => {
         NEXUS.DB // Soporte Avanzado
       </p>
       
-      {/* Título Principal con Efecto Glitch y Peso Ligero */}
       <h1 className="text-6xl md:text-[8rem] leading-[1.0] font-light tracking-tight mb-20 max-w-6xl text-black/90 relative">
         <span className="relative group">
           <span className="absolute -inset-1 text-black mix-blend-difference blur-sm opacity-20 group-hover:opacity-100 transition-opacity">Optimiza.</span>
@@ -29,7 +28,6 @@ const CinematicTitle = () => {
         </span> <br />
         Resuelve. <br />
         
-        {/* Frase Serif Italic con Máscara de Gradiente Iridiscente Animado */}
         <span className="font-serif italic text-transparent bg-clip-text animate-iridescent" style={{ backgroundImage: iridescentGradient }}>
           Domina el juego.
         </span>
@@ -38,7 +36,7 @@ const CinematicTitle = () => {
   );
 };
 
-// 2. Entidad de Datos Refractiva (Lista Interactiva de $50k)
+// 2. Entidad de Datos Refractiva transformada en ENLACE (<Link>)
 const RefractiveDataRow = ({ item }: { item: any }) => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -49,24 +47,21 @@ const RefractiveDataRow = ({ item }: { item: any }) => {
     mouseY.set(clientY - top);
   }
 
-  // Gradiente iridiscente que sigue al mouse (Efecto Refractivo)
   const refractiveGlow = useMotionTemplate`radial-gradient(600px circle at ${mouseX}px ${mouseY}px, rgba(191, 0, 255, 0.1), rgba(0, 207, 255, 0.05) 40%, transparent 80%)`;
 
   return (
-    <div 
+    <Link 
+      href={item.href} // 👈 Aquí inyectamos la ruta
       onMouseMove={handleMouseMove}
-      className="group relative border-b border-black/[0.04] w-full py-12 md:py-20 flex flex-col lg:flex-row lg:items-center justify-between gap-10 hover:bg-[#F0F0EB] transition-colors duration-700 cursor-pointer px-6 md:px-12 -mx-6 md:-mx-12 rounded-3xl overflow-hidden"
+      className="group relative border-b border-black/[0.04] w-full py-12 md:py-20 flex flex-col lg:flex-row lg:items-center justify-between gap-10 hover:bg-[#F0F0EB] transition-colors duration-700 cursor-pointer px-6 md:px-12 -mx-6 md:-mx-12 rounded-3xl overflow-hidden block"
     >
-      {/* Luz refractiva interna que sigue al mouse */}
       <motion.div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0" style={{ background: refractiveGlow }} />
 
-      {/* Contenido Principal */}
       <div className="flex items-start md:items-center gap-10 md:gap-20 transform group-hover:translate-x-6 transition-transform duration-700 ease-[0.16,1,0.3,1] relative z-10 flex-1">
         <span className="text-sm font-medium text-black/20 font-mono pt-2 md:pt-0">
           {item.id}
         </span>
         <div className="flex gap-10 items-center">
-            {/* Icono de Categoría (Aparece en Hover) */}
             <div className={`h-16 w-16 rounded-2xl bg-black border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-700 delay-100 ${item.id === "01" ? 'text-blue-400' : item.id === "02" ? 'text-rose-400' : 'text-emerald-400'}`}>
                 {item.icon}
             </div>
@@ -81,7 +76,6 @@ const RefractiveDataRow = ({ item }: { item: any }) => {
         </div>
       </div>
 
-      {/* Tags y Flecha */}
       <div className="flex items-center gap-8 pl-16 md:pl-0 transform group-hover:-translate-x-2 transition-transform duration-700 ease-[0.16,1,0.3,1] relative z-10 shrink-0">
         <div className="hidden md:flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-200">
           {item.tags.map((tag: string) => (
@@ -95,39 +89,43 @@ const RefractiveDataRow = ({ item }: { item: any }) => {
         </div>
       </div>
 
-    </div>
+    </Link>
   );
 };
 
-// --- DATA (Directorio Expandido) ---
+// --- DATA (Directorio Expandido con RUTAS) ---
 const directory = [
   {
     id: "01",
     icon: <Zap className="h-8 w-8" />,
     title: "Performance & FPS",
     subtitle: "Erradicación de Input Lag, Debloat de Windows y scripts de optimización a nivel kernel (CPU/GPU).",
-    tags: ["FPS Boost", "Debloat", "Latency"]
+    tags: ["FPS Boost", "Debloat", "Latency"],
+    href: "/performance" // 👈 Ruta agregada
   },
   {
     id: "02",
     icon: <ShieldAlert className="h-8 w-8" />,
     title: "Códigos de Error",
     subtitle: "Diagnóstico profundo de BSOD, errores fatales de DirectX y fallos de librerías VCRedist/OpenAL.",
-    tags: ["BSOD", "DirectX", "Crash Fix"]
+    tags: ["BSOD", "DirectX", "Crash Fix"],
+    href: "/errores" // 👈 Ruta agregada
   },
   {
     id: "03",
     icon: <Cpu className="h-8 w-8" />,
     title: "Hardware Tuning",
     subtitle: "Curvas de voltaje de precisión, Undervolting seguro de GPU y Overclocking estabilizado para 4K.",
-    tags: ["Overclock", "Undervolt", "BIOS"]
+    tags: ["Overclock", "Undervolt", "BIOS"],
+    href: "/hardware" // 👈 Ruta agregada
   },
   {
     id: "04",
     icon: <Gamepad2 className="h-8 w-8" />,
     title: "Mods & Parches",
     subtitle: "Directorio automatizado de fixes comunitarios para estabilizar ports de PC defectuosos.",
-    tags: ["Community Mods", "Stuttering Fix"]
+    tags: ["Community Mods", "Stuttering Fix"],
+    href: "/mods" // 👈 Ruta agregada
   }
 ];
 
@@ -160,7 +158,7 @@ export default function QuantumHub() {
         {/* HERO CINEMÁTICO */}
         <CinematicTitle />
 
-        {/* BUSCADOR: Línea fina que se vuelve iridiscente al foco */}
+        {/* BUSCADOR */}
         <div className="relative w-full max-w-4xl group mt-28 mb-32">
           <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none pb-6">
             <Search className="w-8 h-8 text-black/20 group-focus-within:text-[#0055FF] transition-colors duration-500" strokeWidth={1.5} />
@@ -191,7 +189,6 @@ export default function QuantumHub() {
 
       </div>
 
-      {/* ESTILOS GLOBALES INYECTADOS (Para gradientes animados) */}
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes iridescent {
           0% { background-position: 0% 50%; }
